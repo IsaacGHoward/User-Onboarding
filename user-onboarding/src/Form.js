@@ -1,6 +1,7 @@
 import './App.css';
 import React, {useState, useEffect} from 'react';
 import * as Yup from "yup";
+const axios = require('axios').default;
 function Form() {
     const formSchema = Yup.object().shape({
         name: Yup
@@ -32,6 +33,18 @@ function Form() {
       tos:''
     });
     const [buttonDisabled, setButtonDisabled] = useState(false);
+    //const [post, setPost] = useState([]);
+    const formSubmit = e => {
+        e.preventDefault();
+        console.log("Submit");
+        axios
+        .post("https://reqres.in/api/users", formState)
+        .then(res => {
+            //setPost(res.data); // get just the form data from the REST api
+            console.log("success", res);
+        })
+        .catch(err => console.log(err.response));
+    };
     const inputChange = e => {
         e.persist();
         let value = e.target.value;
@@ -63,7 +76,7 @@ function Form() {
         });
       }, [formState]);
     return (
-        <form>
+        <form onSubmit={formSubmit}>
             <label>
                 Name:
                 <input onChange={inputChange} type="text" id="nameInput" name="name"/>
