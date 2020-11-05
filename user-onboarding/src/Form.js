@@ -1,34 +1,88 @@
 import './App.css';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import * as Yup from "yup";
 function Form() {
-  const [formState, setFormState] = useState({
+    const formSchema = Yup.object().shape({
+        name: Yup
+          .string()
+          .required("Must include name."),
+        email: Yup
+          .string()
+          .email("Must be a valid email address.")
+          .required("Must include email address."),
+        password: Yup
+          .string()
+          .min(6, "Passwords must be at least 6 characters long.")
+          .required("Password is Required"),
+        tos: Yup
+          .boolean()
+          .oneOf([true], "You must accept Terms of Service")
+          // required isn't required for checkboxes.
+      });
+    const [errors, setErrors] = useState({
+      name: "",
+      email: "",
+      password: "",
+      tos:""
+    });
+    const [formState, setFormState] = useState({
       name:'',
       email:'',
       password:'',
       tos:''
-  });
-  return (
-    <form>
-        <label>
-            Name:
-            <input type="text" id="nameInput" name="name"/>
-        </label>
-        <label>
-            Email:
-            <input type="email" id="emailInput" name="email"/>
-        </label>
-        <label>
-            Password:
-            <input type="password" id="passwordInput" name="password"/>
-        </label>
-        <label>
-            Terms of Service:
-            <input type="checkbox" id="tosInput" name="tos"/>
-        </label>
-        <button>Submit</button>
-    </form>
-  );
-}
+    });
+    const [buttonDisabled, setButtonDisabled] = useState(false);
+    const inputChange = e => {
+        e.persist();
+        let value = e.target.value;
+        if(e.target.type === "checkbox")
+            value = e.target.checked;
+        Yup
+        .reach(formSchema, e.target.name)
+        .validate(value)
+        .then(valid => {
+        setErrors({
+            ...errors,
+            [e.target.name]: ""
+        });
+        })
+        .catch(err => {
+        setErrors({
+            ...errors,
+            [e.target.name]: err.errors[0]
+        });
+        });
+        setFormState({
+            ...formState,
+            [e.target.name]: value
+        });
+    };
+    useEffect(() => {
+        formSchema.isValid(formState).then(valid => {
+          setButtonDisabled(!valid);
+        });
+      }, [formState]);
+    return (
+        <form>
+            <label>
+                Name:
+                <input onChange={inputChange} type="text" id="nameInput" name="name"/>
+            </label>
+            <label>
+                Email:
+                <input onChange={inputChange} type="email" id="emailInput" name="email"/>
+            </label>
+            <label>
+                Password:
+                <input onChange={inputChange} type="password" id="passwordInput" name="password"/>
+            </label>
+            <label>
+                Terms of Service:
+                <input onChange={inputChange} type="checkbox" id="tosInput" name="tos"/>
+            </label>
+            <button disabled={buttonDisabled}>Submit</button>
+        </form>
+    );
+    }
 
 export default Form;
