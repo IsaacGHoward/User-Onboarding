@@ -81,6 +81,13 @@ function Form() {
                 <input onChange={inputChange} type="checkbox" id="tosInput" name="tos"/>
             </label>
             <button disabled={buttonDisabled}>Submit</button>
+            <br/>
+            <div>
+                Errors: 
+                {errors.name.length > 0 ? (<p>{errors.name}</p>) : null}
+                {errors.email.length > 0 ? (<p>{errors.email}</p>) : null}
+                {errors.password.length > 0 ? (<p>{errors.password}</p>) : null}
+            </div>
         </form>
     );
     }
