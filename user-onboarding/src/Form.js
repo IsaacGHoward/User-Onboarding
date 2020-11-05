@@ -33,14 +33,14 @@ function Form() {
       tos:''
     });
     const [buttonDisabled, setButtonDisabled] = useState(false);
-    //const [post, setPost] = useState([]);
+    const [users, setUsers] = useState([]);
     const formSubmit = e => {
         e.preventDefault();
         console.log("Submit");
         axios
         .post("https://reqres.in/api/users", formState)
         .then(res => {
-            //setPost(res.data); // get just the form data from the REST api
+            setUsers([...users, res.data]);
             console.log("success", res);
         })
         .catch(err => console.log(err.response));
@@ -101,7 +101,13 @@ function Form() {
                 {errors.email.length > 0 ? (<p>{errors.email}</p>) : null}
                 {errors.password.length > 0 ? (<p>{errors.password}</p>) : null}
             </div>
+            <div>
+                Users: 
+                <pre>{JSON.stringify(users, null, 2)}</pre>
+            </div>
+            
         </form>
+        
     );
     }
 
