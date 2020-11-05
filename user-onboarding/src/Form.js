@@ -1,24 +1,32 @@
 import './App.css';
-import React from 'react';
+import React, {useState} from 'react';
+import * as Yup from "yup";
 function Form() {
+  const [formState, setFormState] = useState({
+      name:'',
+      email:'',
+      password:'',
+      tos:''
+  });
   return (
     <form>
         <label>
             Name:
-            <input type="text"/>
+            <input type="text" id="nameInput" name="name"/>
         </label>
         <label>
             Email:
-            <input type="email"/>
+            <input type="email" id="emailInput" name="email"/>
         </label>
         <label>
             Password:
-            <input type="password"/>
+            <input type="password" id="passwordInput" name="password"/>
         </label>
         <label>
             Terms of Service:
-            <input type="checkbox" />
+            <input type="checkbox" id="tosInput" name="tos"/>
         </label>
+        <button>Submit</button>
     </form>
   );
 }
