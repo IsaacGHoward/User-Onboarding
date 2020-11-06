@@ -4,6 +4,26 @@ describe('Name Entry', function(){
         cy.get('#nameInput')
             .type('Example Name')
             .should('have.value', 'Example Name')
-        
+    })
+})
+describe('Email Entry', function(){
+    it('Should enter an email in the email field of the webpage', function(){
+        cy.get('#emailInput')
+            .type('email@test.com')
+            .should('have.value', 'email@test.com')
+    })
+})
+describe('Password Entry', function(){
+    it('Should enter a password in the password field of the webpage', function(){
+        cy.get('#passwordInput')
+            .type('password')
+            .should('have.value', 'password')
+    })
+})
+describe('Terms of Service Checkbox', function(){
+    it('Should check the terms of service box on the page', function(){
+        cy.get('#tosInput')
+            .check()
+            .should('have.checked', 'true')
     })
 })
