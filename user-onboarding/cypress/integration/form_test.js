@@ -27,3 +27,18 @@ describe('Terms of Service Checkbox', function(){
             .should('have.checked', 'true')
     })
 })
+describe('Submit Form', function(){
+    it('Should submit the form', function(){
+        cy.get('button')
+            .click()
+        
+    })
+})
+describe('Check for invalid form submission', function(){
+    it('Should not submit form', function(){
+        cy.get('#tosInput')
+            .uncheck()
+        cy.get('button')
+            .should('have.disabled', 'true');
+    })
+})
